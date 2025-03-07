@@ -1,5 +1,6 @@
 from htmlnode import *
 
+#Leaf node is any end node that does not have any children
 class LeafNode(HTMLNode):
     def __init__(self, tag, value, props=None):
         super().__init__()
