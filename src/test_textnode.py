@@ -32,6 +32,8 @@ class TestTextNode(unittest.TestCase):
         self.assertEqual(html_node.value, "test link")
         self.assertEqual(html_node.props, {"href": "https://www.google.com"})
 
+   
+
 
 if __name__ == "__main__":
     unittest.main()
