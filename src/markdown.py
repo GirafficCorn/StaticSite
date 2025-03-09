@@ -33,6 +33,8 @@ def split_nodes_images(old_nodes):
                 results.append(TextNode(working[iter][0], TextType.IMAGE, working[iter][1]))
                 base = " ".join(temp[1:])
                 iter += 1
+            if base != "":
+                results.append(base)
 
     return results
 
@@ -61,10 +63,8 @@ def split_nodes_link(old_nodes):
                 results.append(TextNode(working[iter][0], TextType.LINK, working[iter][1]))
                 base = " ".join(temp[1:])
                 iter += 1
+            if base != "":
+                results.append(base)
 
     return results
-
-
-
-
 

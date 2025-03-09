@@ -3,9 +3,10 @@ from textnode import *
 
 
 def text_to_textnodes(text):
-    results = []
-    prepare = TextNode(text, TextType.TEXT)
-    results.append(split_nodes_images(prepare))
+    base = [TextNode(text, TextType.TEXT)]
+    base = split_nodes_images(base)
+    #base = split_nodes_link([base])
+    return base
     
 
 
