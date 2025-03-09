@@ -24,7 +24,7 @@ def split_nodes_images(old_nodes):
         
         #If there are no images in the text, add the node as is to results
         if len(working) == 0:
-            results.append(TextNode(base, TextType.TEXT))
+            results.append(node)
         else:
             iter = 0
             while iter < len(working):
@@ -34,7 +34,7 @@ def split_nodes_images(old_nodes):
                 base = " ".join(temp[1:])
                 iter += 1
             if base != "":
-                results.append(base)
+                results.append(TextNode(base, TextType.TEXT))
 
     return results
 
@@ -54,7 +54,7 @@ def split_nodes_link(old_nodes):
         
         #If there are no links in the text, add the node as is to results
         if len(working) == 0:
-            results.append(TextNode(base, TextType.TEXT))
+            results.append(node)
         else:
             iter = 0
             while iter < len(working):
@@ -64,7 +64,7 @@ def split_nodes_link(old_nodes):
                 base = " ".join(temp[1:])
                 iter += 1
             if base != "":
-                results.append(base)
+                results.append(TextNode(base, TextType.TEXT))
 
     return results
 
