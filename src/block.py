@@ -9,23 +9,25 @@ class BlockTypes(Enum):
     ORDERED_LIST = "ordered list"
 
 def block_to_block_type(block):
-    if not block:
-        return BlockTypes.PARAGRAPH
     if block[0] == "#":
         limit = len(block)
-        if " " not in block[0:6]:
+        num_hashtag = 0
+        for i in range(0, 6):
+            if block[i] == "#":
+                num_hashtag += 1
+                if block[i + 1] == " ":
+                    break
+        if 1 <= num_hashtag <=6 and block[num_hashtag] == " ":
+            return BlockTypes.HEADING
+        else:
             return BlockTypes.PARAGRAPH
-        for i in range(0, min(6, limit)):
-            if block[i] == "#" and block[i + 1] == " ":
-                return BlockTypes.HEADING
-            
-    if block[:3] == "```" and block[-3:] == "```":
+    elif block.strip().startswith("```") and block.strip().endswith("```"):
         return BlockTypes.CODE
     
-    if block.startswith(">"):
+    elif block.startswith(">"):
         return BlockTypes.QUOTE
     
-    if block.startswith("- "):
+    elif block.startswith("- "):
         check = block.split("\n")
         result = True
         for i in check:
@@ -36,8 +38,10 @@ def block_to_block_type(block):
                 break
         if result == True:
             return BlockTypes.UNORDERED_LIST
+        else:
+            return BlockTypes.PARAGRAPH
     
-    if block[0].isdigit() and block[1:3] == ". ":
+    elif block[0].isdigit() and block[1:3] == ". ":
         check = block.split("\n")
         start = int(block[0])
         is_list = True
@@ -49,6 +53,8 @@ def block_to_block_type(block):
                 break
         if is_list == True:
             return BlockTypes.ORDERED_LIST
+        else:
+            return BlockTypes.PARAGRAPH
     else:
         return BlockTypes.PARAGRAPH
             

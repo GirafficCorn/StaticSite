@@ -7,7 +7,19 @@ class HTMLNode():
         self.props = props
 
     def to_html(self):
-        raise NotImplementedError
+        if self.tag is None:
+            return self.value
+        
+        children_html = ""
+        if self.children:
+            for child in self.children:
+                children_html += child.to_html()
+        
+        props_html = self.props_to_html() if hasattr(self, "props_to_html") and self.props else ""
+
+        if self.children:
+            return f"<{self.tag}{props_html}>{children_html}</{self.tag}>"
+
         
     def props_to_html(self):
         conversions = []
