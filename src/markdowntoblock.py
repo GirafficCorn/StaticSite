@@ -8,8 +8,6 @@ from parentnode import *
 def markdown_to_blocks(markdown):
     prep = markdown.strip()
     base = prep.split("\n\n")
- 
-
     return base
 
 
@@ -25,51 +23,52 @@ def block_to_html_node(block):
     type = block_to_block_type(block)
     children = text_to_children(block)
    
-
     if type == BlockTypes.PARAGRAPH:
         text = block.replace("\n", " ")
-      
-
         children = text_to_children(text)
-    
-
-        return HTMLNode("p", "", children)
+        return ParentNode("p", children)
     elif type == BlockTypes.HEADING:
         count = 0
         for i in range(0, 6):
             if block[i] == "#":
                 count += 1
         text = block.replace("#", "")
+        text = text.strip()
         children = text_to_children(text)
-        return HTMLNode(f"h{count}", None, children)
+        return ParentNode(f"h{count}", children)
     elif type == BlockTypes.QUOTE:
-        text = block.replace(">", "")
-        children = text_to_children(text)
-        return HTMLNode("blockquote", text, children)
+        lines = block.split("\n")
+        new_lines = []
+        for line in lines:
+            if not line.startswith(">"):
+                raise ValueError("invalid quote block")
+            new_lines.append(line.lstrip(">").strip())
+        content = " ".join(new_lines)
+        children = text_to_children(content)
+        return ParentNode("blockquote", children)
     elif type == BlockTypes.UNORDERED_LIST:
         text1 = block.replace("- ", "<li>")
         text2 = text1.replace("\n", "</li>")
         children = text_to_children(text2)
-        return HTMLNode("ul", None, children)
+        return ParentNode("ul", children)
     elif type == BlockTypes.ORDERED_LIST:
-        text1 = ""
+        items = []
         text2 = block.split("\n")
+        
         for line in text2:
-            slice = line[:3]
-            text1 += (line.replace(slice, "<li>"))
-
-        children = text_to_children(text1)
-        return HTMLNode("ol", None, children)
+            slice = line[3:]
+            children = text_to_children(slice)
+            items.append(ParentNode("li", children))
+        return ParentNode("ol", items)
     elif type == BlockTypes.CODE:
         text = block.strip()
         text = block[3:-3].replace("\n", "\\n")
         print("***", text)
         # Create text node with raw content
         text_node = TextNode(text, TextType.TEXT)
-        print("***", text_node)
-        code_node = HTMLNode("code", None, [text_node.text_node_to_html_node()])
+        code_node = ParentNode("code", [text_node.text_node_to_html_node()])
         # Wrap in pre tag
-        return HTMLNode("pre", None, [code_node])
+        return ParentNode("pre", [code_node])
     
 
 

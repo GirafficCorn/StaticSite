@@ -12,7 +12,11 @@ def extract_markdown_links(text):
 def split_nodes_images(old_nodes):
     results = []
     #Iterate through each input node
+
     for node in old_nodes:
+        if node.text_type != TextType.TEXT:
+            results.append(node)
+            continue
         base = node.text
 
         #Assign list of extracted images
@@ -28,8 +32,9 @@ def split_nodes_images(old_nodes):
         else:
             iter = 0
             while iter < len(working):
-                temp = base.split(f"![{working[iter][0]}]({working[iter][1]})")
-                results.append(TextNode(temp[0], TextType.TEXT))
+                temp = base.split(f"![{working[iter][0]}]({working[iter][1]})", 1)
+                if temp[0] != "":
+                    results.append(TextNode(temp[0], TextType.TEXT))
                 results.append(TextNode(working[iter][0], TextType.IMAGE, working[iter][1]))
                 base = " ".join(temp[1:])
                 iter += 1
