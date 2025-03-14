@@ -38,4 +38,4 @@ def generate_pages_recursive(dir_path_content, template_path, dest_dir_path, bas
             filepath.write(template)
             
         else:
-            generate_pages_recursive(item_path, "./template.html", new_item_path, basepath)
+            generate_pages_recursive(item_path, template_path, new_item_path, basepath)
