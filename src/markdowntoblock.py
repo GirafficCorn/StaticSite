@@ -63,7 +63,6 @@ def block_to_html_node(block):
     elif type == BlockTypes.CODE:
         text = block.strip()
         text = block[3:-3].replace("\n", "\\n")
-        print("***", text)
         # Create text node with raw content
         text_node = TextNode(text, TextType.TEXT)
         code_node = ParentNode("code", [text_node.text_node_to_html_node()])

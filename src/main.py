@@ -8,6 +8,7 @@ from extracttitle import *
 from copystatictopublic import *
 from markdowntoblock import *
 from generatepagesrecursively import *
+import sys
 
 '''def generate_page(from_path, template_path, dest_path):
     print(f"Generating page from {from_path} to {dest_path} using {template_path}")
@@ -36,9 +37,11 @@ from generatepagesrecursively import *
 
 
 path_static = "./static"
-path_public = "./public"
+path_public = "./docs"
 path_content = "./content"
 template_path = "./template.html"
+basepath = sys.argv
+
 def main():
    if os.path.exists(path_public):
     shutil.rmtree(path_public)
@@ -46,8 +49,8 @@ def main():
     copy_static_to_public(path_static, path_public)
  
     #generate_page(os.path.join(path_content, "index.md"), template_path, os.path.join(path_public, "index.html"))
-    generate_pages_recursive(path_content, template_path, path_public)
-
+    generate_pages_recursive(path_content, template_path, path_public, basepath)
+    
 
     
 
